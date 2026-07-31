@@ -1,0 +1,49 @@
+name: Diagnose ARGUS 16.3.0 Publication
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout channel
+        uses: actions/checkout@v4
+
+      - name: Read current private artifact URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="$(sed -n 's/^[[:space:]]*ARGUS_ARTIFACT_URL: "\(.*\)"/\1/p' .github/workflows/publish-16300-local-runtime.yml | head -n1)"
+          test -n "$URL"
+          echo "ARGUS_ARTIFACT_URL=$URL" >> "$GITHUB_ENV"
+
+      - name: Download and verify private artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 "$ARGUS_ARTIFACT_URL" -o artifact.zip
+          unzip -q artifact.zip -d artifact
+          APK="$(find artifact -type f -name 'ARGUS-MASTER-16.3.0-Local-Runtime-Foundation.apk' | head -n1)"
+          test -f "$APK"
+          echo "6b907ab6fbfeaae3163c43a41c14a72de48b464f73ec2d76436136a42134be66  $APK" | sha256sum -c -
+
+      - name: Verify encryption environment
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check cryptography==45.0.5
+          python - <<'PY'
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          import os
+          key = AESGCM.generate_key(bit_length=256)
+          nonce = os.urandom(12)
+          encrypted = AESGCM(key).encrypt(nonce, b'ARGUS-1630-PROBE', b'ARGUS')
+          assert AESGCM(key).decrypt(nonce, encrypted, b'ARGUS') == b'ARGUS-1630-PROBE'
+          print('ARGUS publication environment PASS')
+          PY
