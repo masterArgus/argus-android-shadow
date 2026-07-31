@@ -1,6 +1,5 @@
 name: Publish ARGUS 16.3.0 Local Runtime Foundation
 
-# Fresh private artifact URL for the verified APK.
 on:
   push:
     paths:
@@ -27,7 +26,7 @@ jobs:
 
       - name: Download verified private APK artifact
         env:
-          ARGUS_ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-3b1c-81f4-866c-9b8331775c31/raw?se=2026-07-31T08:27:16Z&sp=r&sv=2026-02-06&sr=b&scid=c8cfbbf4-63e5-5a12-8788-248d91f84d9d&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T06:13:36Z&ske=2026-08-02T06:13:36Z&sks=b&skv=2026-02-06&sig=hZkaQVU81cJn40valgOdylKvAcM16z1V1f8/TkClc10%3D"
+          ARGUS_ARTIFACT_URL: "https://sdmntprpolandcentral.oaiusercontent.com/files/00000000-3b28-820a-ab2e-b98888d0eab5/raw?se=2026-07-31T08:40:15Z&sp=r&sv=2026-02-06&sr=b&scid=f9254921-6908-5a97-994e-03180187f2f7&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-30T22:46:58Z&ske=2026-08-01T22:46:58Z&sks=b&skv=2026-02-06&sig=HXssxNm01H3QYua%2B7EyE8fbCRwQZX2IvA1s2ogjEv1s%3D"
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 "$ARGUS_ARTIFACT_URL" -o artifact.zip
@@ -106,7 +105,7 @@ Z4xDa9dL/foQ3WfGeKbn21G9nllmW3kzPzlyHoGUF2bbAgMBAAE=
               "aad_base64": base64.b64encode(aad).decode(),
               "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
               "device_id": device_id,
-              "published_at": "2026-07-31T11:25:00+03:00",
+              "published_at": "2026-07-31T11:40:00+03:00",
               "key_wrap_profile": "RSA-OAEP-SHA256-MGF1-SHA1",
               "release_notes": [
                   "Добавлено локальное ядро Android",
