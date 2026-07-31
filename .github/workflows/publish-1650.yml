@@ -1,0 +1,135 @@
+name: Publish encrypted ARGUS 16.5.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-1650.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout channel
+        uses: actions/checkout@v4
+
+      - name: Download verified private artifact
+        env:
+          ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-c6b0-81f4-ae32-002d5c1b60f9/raw?se=2026-07-31T14:34:34Z&sp=r&sv=2026-02-06&sr=b&scid=3d006cc9-ba14-577e-b2a0-355d183903c2&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T06:45:58Z&ske=2026-08-02T06:45:58Z&sks=b&skv=2026-02-06&sig=8He59VSk4Y3s9LJLVqaPnouXuSvHiIxLbSWRlV5z8LM%3D"
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 "$ARTIFACT_URL" -o artifact.zip
+          unzip -q artifact.zip -d artifact
+          test -f artifact/ARGUS-MASTER-16.5.0-Time-Series-Foundation.apk
+          echo "e19048511f48092a489401dd0f04c5ec7a3506ae99a20b2f8bb0bd532c4f60db  artifact/ARGUS-MASTER-16.5.0-Time-Series-Foundation.apk" | sha256sum -c -
+
+      - name: Encrypt for registered tablet and write manifest
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet cryptography
+          python3 - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from cryptography.hazmat.primitives import hashes, serialization
+          from cryptography.hazmat.primitives.asymmetric import padding
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+          device_id = "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2"
+          version_code = 1650000
+          version_name = "16.5.0-master-time-series-foundation"
+          package_name = "com.argus.standalone.main"
+          cert = "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0"
+          public_key_pem = b"""-----BEGIN PUBLIC KEY-----
+          MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA01MP53jzEzujpxxw5oXU
+          ENsszGeq69DLwQLZQ6SWZ/oighUKcRvfSaPMj8ZT/o2CX5VeL6bc595xRFH85szC9
+          XoOgD4C+R55iRKOvV9vAJAlsFWCsgWFYfiCEJE4lR8CmoUuUEcBYRwQ4pC4+j/nK
+          OGLDRU8aG8NBoY+QCvprc7w+k09C+O9D48msfHWUEZCDPGlyeRDjYaVfKeNswLcm
+          xj/Pqs808ChtDkp03fARCGE2UHw273a/3wjX8KjQeAIoMLSiqWY8z99Cx1SI4psi
+          WescaJCFZp4Qf767v/79/FVItDXMyOD+ELHksWBA0734rhMVdycvRaGMsou8On4W
+          2JtFP9Sd2bk8GY7a3JxfLx8P2BpZGXJs2rwc0HU+lXKidTcGeH7uJX2uAGunom5N
+          M6DeMyLWnmRjKy9/hNDfEvtPBencvJ5d7NMgcMre3ZFCStx68JeqLrmE2wAWTu8n
+          Z4xDa9dL/foQ3WfGeKbn21G9nllmW3kzPzlyHoGUF2bbAgMBAAE=
+          -----END PUBLIC KEY-----
+          """
+
+          apk_path = Path("artifact/ARGUS-MASTER-16.5.0-Time-Series-Foundation.apk")
+          plaintext = apk_path.read_bytes()
+          plaintext_sha = hashlib.sha256(plaintext).hexdigest()
+          if plaintext_sha != "e19048511f48092a489401dd0f04c5ec7a3506ae99a20b2f8bb0bd532c4f60db":
+              raise SystemExit("plaintext hash mismatch")
+
+          aad = f"ARGUS|stable-device-bound|{package_name}|{version_code}|{device_id}".encode()
+          aes_key = AESGCM.generate_key(bit_length=256)
+          nonce = os.urandom(12)
+          ciphertext = AESGCM(aes_key).encrypt(nonce, plaintext, aad)
+
+          public_key = serialization.load_pem_public_key(public_key_pem)
+          wrapped_key = public_key.encrypt(
+              aes_key,
+              padding.OAEP(
+                  mgf=padding.MGF1(algorithm=hashes.SHA1()),
+                  algorithm=hashes.SHA256(),
+                  label=None,
+              ),
+          )
+
+          payload_dir = Path("payloads")
+          payload_dir.mkdir(exist_ok=True)
+          for old in payload_dir.glob("*.enc"):
+              old.unlink()
+          payload_name = "ARGUS-MASTER-16.5.0-bcc61ed52b22f6c8.apk.enc"
+          payload_path = payload_dir / payload_name
+          payload_path.write_bytes(ciphertext)
+          ciphertext_sha = hashlib.sha256(ciphertext).hexdigest()
+
+          manifest = {
+              "schema": 1,
+              "channel": "stable-device-bound",
+              "status": "ready",
+              "package_name": package_name,
+              "version_code": version_code,
+              "version_name": version_name,
+              "payload_url": f"https://raw.githubusercontent.com/masterArgus/argus-android-shadow/main/payloads/{payload_name}",
+              "ciphertext_sha256": ciphertext_sha,
+              "plaintext_sha256": plaintext_sha,
+              "wrapped_key_base64": base64.b64encode(wrapped_key).decode(),
+              "nonce_base64": base64.b64encode(nonce).decode(),
+              "aad_base64": base64.b64encode(aad).decode(),
+              "certificate_sha256": cert,
+              "device_id": device_id,
+              "published_at": datetime.now(timezone.utc).isoformat(),
+              "key_wrap_profile": "RSA-OAEP-SHA256-MGF1-SHA1",
+              "release_notes": [
+                  "Добавлена локальная история 1m, 5m, 15m, 30m и 1h",
+                  "Созданы 35 временных рядов для 7 пар",
+                  "Добавлены контроль пропусков, свежести и дублей",
+                  "Добавлено безопасное восстановление истории пакетами",
+                  "Исправлена планшетная разметка без горизонтального скролла",
+                  "MASTER, ИИ и защищённый updater сохранены",
+                  "Автоматические ордера остаются HARD BLOCKED"
+              ]
+          }
+          Path("latest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Publish encrypted payload only
+        run: |
+          set -euo pipefail
+          rm -rf artifact artifact.zip
+          git rm .github/workflows/publish-1650.yml
+          git config user.name "ARGUS Secure Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add latest.json payloads
+          git commit -m "Publish encrypted ARGUS 16.5.0 time-series foundation"
+          git push
