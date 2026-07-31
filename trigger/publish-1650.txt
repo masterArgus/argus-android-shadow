@@ -1,1 +1,1 @@
-ARGUS 16.5.0 verified publication trigger
+ARGUS 16.5.0 verified publication trigger retry 2
