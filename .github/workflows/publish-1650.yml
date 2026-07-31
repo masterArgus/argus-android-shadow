@@ -49,7 +49,7 @@ jobs:
           cert = "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0"
           public_key_pem = b"""-----BEGIN PUBLIC KEY-----
           MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA01MP53jzEzujpxxw5oXU
-          ENsszGeq69DLwQLZQ6SWZ/oighUKcRvfSaPMj8ZT/o2CX5VeL6bc595xRFH85szC9
+          ENsszGeq69DLwQLZQ6SWZ/ighUKcRvfSaPMj8ZT/o2CX5VeL6bc595xRFH85szC9
           XoOgD4C+R55iRKOvV9vAJAlsFWCsgWFYfiCEJE4lR8CmoUuUEcBYRwQ4pC4+j/nK
           OGLDRU8aG8NBoY+QCvprc7w+k09C+O9D48msfHWUEZCDPGlyeRDjYaVfKeNswLcm
           xj/Pqs808ChtDkp03fARCGE2UHw273a/3wjX8KjQeAIoMLSiqWY8z99Cx1SI4psi
