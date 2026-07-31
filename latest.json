@@ -10,6 +10,7 @@
   "plaintext_sha256": "",
   "wrapped_key_base64": "",
   "nonce_base64": "",
+  "aad_base64": "",
   "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
   "device_id": "",
   "published_at": "",
