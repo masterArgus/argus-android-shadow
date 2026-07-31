@@ -19,7 +19,7 @@ jobs:
 
       - name: Download verified private artifact
         env:
-          ARTIFACT_URL: "https://sdmntpritalynorth.oaiusercontent.com/files/00000000-aebc-8246-86ba-8aa3a27a813b/raw?se=2026-07-31T15:39:04Z&sp=r&sv=2026-02-06&sr=b&scid=c11a52f6-78f6-5522-8035-4df9d5c29766&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T05:52:01Z&ske=2026-08-02T05:52:01Z&sks=b&skv=2026-02-06&sig=IckK1W6KYmmTfkETkBm9iG/6RdaZsKQ7%2BWybGYC8NdY%3D"
+          ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-887c-81f4-85eb-6f728d05358d/raw?se=2026-07-31T15:44:20Z&sp=r&sv=2026-02-06&sr=b&scid=e78068dd-6de6-5e71-9ea5-5c5cc6811186&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-30T22:31:34Z&ske=2026-08-01T22:31:34Z&sks=b&skv=2026-02-06&sig=ZJjsO3l/4SqoeFA8Ke1SPYMn4OATU9N3Caxg0f0AO5g%3D"
         run: |
           set -euo pipefail
           curl -fL --retry 3 "$ARTIFACT_URL" -o artifact.zip
@@ -47,7 +47,7 @@ jobs:
           version_name = "16.6.0-master-first-floor-range-engine"
           package_name = "com.argus.standalone.main"
           certificate_sha256 = "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0"
-          public_key_der_b64 = "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA01MP53jzEzujpxxw5oXUENsszGeq69DLwQLZQ6SWZ/oighUKcRvfSaPMj8ZT/o2CX5VeL6bc595xRFH85szC9XoOgD4C+R55iRKOvV9vAJAlsFWCsgWFYfiCEJE4lR8CmoUuUEcBYRwQ4pC4+j/nKOGLDRU8aG8NBoY+QCvprc7w+k09C+O9D48msfHWUEZCDPGlyeRDjYaVfKeNswLcmxj/Pqs808ChtDkp03fARCGE2UHw273a/3wjX8KjQeAIoMLSiqWY8z99Cx1SI4psiWescaJCFZp4Qf767v/79/FVItDXMyOD+ELHksWBA0734rhMVdycvRaGMsou8On4W2JtFP9Sd2bk8GY7a3JxfLx8P2BpZGXJs2rwc0HU+lXKidTcGeH7uJX2uAGunom5NM6DeMyLWnmRjKy9/hNDfEvtPBencvJ5d7NMgcMre3ZFCStx68JeqLrmE2wAWTu8nZ4xDa9dL/foQ3WfGeKbn21G9nllmW3kzPzlyHoGUF2bbAgMBAAE="
+          public_key_der_b64 = "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA01MP53jzEzujpxxw5oXUENsszGeq69DLwQLZQ6SWZ/ighUKcRvfSaPMj8ZT/o2CX5VeL6bc595xRFH85szC9XoOgD4C+R55iRKOvV9vAJAlsFWCsgWFYfiCEJE4lR8CmoUuUEcBYRwQ4pC4+j/nKOGLDRU8aG8NBoY+QCvprc7w+k09C+O9D48msfHWUEZCDPGlyeRDjYaVfKeNswLcmxj/Pqs808ChtDkp03fARCGE2UHw273a/3wjX8KjQeAIoMLSiqWY8z99Cx1SI4psiWescaJCFZp4Qf767v/79/FVItDXMyOD+ELHksWBA0734rhMVdycvRaGMsou8On4W2JtFP9Sd2bk8GY7a3JxfLx8P2BpZGXJs2rwc0HU+lXKidTcGeH7uJX2uAGunom5NM6DeMyLWnmRjKy9/hNDfEvtPBencvJ5d7NMgcMre3ZFCStx68JeqLrmE2wAWTu8nZ4xDa9dL/foQ3WfGeKbn21G9nllmW3kzPzlyHoGUF2bbAgMBAAE="
 
           apk_path = Path("artifact/ARGUS-MASTER-16.6.0-First-Floor-Range-Engine.apk")
           plaintext = apk_path.read_bytes()
@@ -123,4 +123,4 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add latest.json payloads
           git commit -m "Publish encrypted ARGUS 16.6.0 first-floor range engine"
-          git push
+          git push origin HEAD:main
