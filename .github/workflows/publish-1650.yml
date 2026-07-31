@@ -1,10 +1,10 @@
 name: Publish encrypted ARGUS 16.5.0
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
-      - .github/workflows/publish-1650.yml
+      - trigger/publish-1650.txt
 
 permissions:
   contents: write
@@ -14,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout channel
+      - name: Checkout channel main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Download verified private artifact
         env:
@@ -70,7 +72,6 @@ jobs:
           aes_key = AESGCM.generate_key(bit_length=256)
           nonce = os.urandom(12)
           ciphertext = AESGCM(aes_key).encrypt(nonce, plaintext, aad)
-
           public_key = serialization.load_pem_public_key(public_key_pem)
           wrapped_key = public_key.encrypt(
               aes_key,
@@ -88,7 +89,6 @@ jobs:
           payload_name = "ARGUS-MASTER-16.5.0-bcc61ed52b22f6c8.apk.enc"
           payload_path = payload_dir / payload_name
           payload_path.write_bytes(ciphertext)
-          ciphertext_sha = hashlib.sha256(ciphertext).hexdigest()
 
           manifest = {
               "schema": 1,
@@ -98,7 +98,7 @@ jobs:
               "version_code": version_code,
               "version_name": version_name,
               "payload_url": f"https://raw.githubusercontent.com/masterArgus/argus-android-shadow/main/payloads/{payload_name}",
-              "ciphertext_sha256": ciphertext_sha,
+              "ciphertext_sha256": hashlib.sha256(ciphertext).hexdigest(),
               "plaintext_sha256": plaintext_sha,
               "wrapped_key_base64": base64.b64encode(wrapped_key).decode(),
               "nonce_base64": base64.b64encode(nonce).decode(),
@@ -132,4 +132,4 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add latest.json payloads
           git commit -m "Publish encrypted ARGUS 16.5.0 time-series foundation"
-          git push
+          git push origin HEAD:main
