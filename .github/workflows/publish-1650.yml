@@ -21,7 +21,7 @@ jobs:
 
       - name: Download verified private artifact
         env:
-          ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-c6b0-81f4-ae32-002d5c1b60f9/raw?se=2026-07-31T14:34:34Z&sp=r&sv=2026-02-06&sr=b&scid=3d006cc9-ba14-577e-b2a0-355d183903c2&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T06:45:58Z&ske=2026-08-02T06:45:58Z&sks=b&skv=2026-02-06&sig=8He59VSk4Y3s9LJLVqaPnouXuSvHiIxLbSWRlV5z8LM%3D"
+          ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-e000-81f4-8490-6929f83d0f72/raw?se=2026-07-31T14:49:57Z&sp=r&sv=2026-02-06&sr=b&scid=ba187ec3-1d3f-5bf5-bba9-2eb2741f1f02&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T07:08:03Z&ske=2026-08-02T07:08:03Z&sks=b&skv=2026-02-06&sig=HodlnBMe4c6XHrhyjp6ZPvnK1LaCNhx/1fIMk46Y7m0%3D"
         run: |
           set -euo pipefail
           curl -fL --retry 3 "$ARTIFACT_URL" -o artifact.zip
