@@ -1,6 +1,6 @@
 name: Publish ARGUS 16.3.0 Local Runtime Foundation
 
-# Second push starts publication after the workflow exists on main.
+# Fresh private artifact URL for the verified APK.
 on:
   push:
     paths:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Download verified private APK artifact
         env:
-          ARGUS_ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-e89c-81f4-aee8-7e5bbd5c7147/raw?se=2026-07-31T08:20:52Z&sp=r&sv=2026-02-06&sr=b&scid=cf2b7ef6-e624-5320-b437-48cc9e1335e6&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T05:05:23Z&ske=2026-08-02T05:05:23Z&sks=b&skv=2026-02-06&sig=bMNILM56tkpQvnjZTG5hkMR56YV5DZuBXh8VxjJXYIA%3D"
+          ARGUS_ARTIFACT_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-3b1c-81f4-866c-9b8331775c31/raw?se=2026-07-31T08:27:16Z&sp=r&sv=2026-02-06&sr=b&scid=c8cfbbf4-63e5-5a12-8788-248d91f84d9d&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T06:13:36Z&ske=2026-08-02T06:13:36Z&sks=b&skv=2026-02-06&sig=hZkaQVU81cJn40valgOdylKvAcM16z1V1f8/TkClc10%3D"
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 "$ARGUS_ARTIFACT_URL" -o artifact.zip
@@ -106,7 +106,7 @@ Z4xDa9dL/foQ3WfGeKbn21G9nllmW3kzPzlyHoGUF2bbAgMBAAE=
               "aad_base64": base64.b64encode(aad).decode(),
               "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
               "device_id": device_id,
-              "published_at": "2026-07-31T11:20:00+03:00",
+              "published_at": "2026-07-31T11:25:00+03:00",
               "key_wrap_profile": "RSA-OAEP-SHA256-MGF1-SHA1",
               "release_notes": [
                   "Добавлено локальное ядро Android",
