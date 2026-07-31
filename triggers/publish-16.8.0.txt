@@ -1,0 +1,4 @@
+ARGUS 16.8.0 secure publication trigger
+Source merge: 01916dc816a519fefd08b66438fed1299600faa4
+Verified artifact ID: 8802509589
+Plaintext SHA-256: 584d3d2945237a86428a534c30e941a09736ce6d374db6936734c13c077589a4
