@@ -1,5 +1,6 @@
 name: Publish ARGUS 16.3.0 Local Runtime Foundation
 
+# Second push starts publication after the workflow exists on main.
 on:
   push:
     paths:
