@@ -1,0 +1,78 @@
+name: Publish fixed ARGUS 16.10.0 device-bound update
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact publication branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Reassemble and verify fixed encrypted payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          NEW="ARGUS-MASTER-16.10.0-bcc61ed52b22f6c8-v16010000.apk.enc"
+          WORK="$RUNNER_TEMP/argus-1610-fixed"
+          mkdir -p "$WORK"
+          cat staging-1610-versioncode/payload-* | base64 -d > "$WORK/$NEW"
+          echo "804874230f6e00caf4b334ce19c8b4ce1a0c1b971a5356dff78131d2b04fd201  $WORK/$NEW" | sha256sum -c -
+          cp staging-1610-versioncode/latest-1610-fixed.json "$WORK/latest.json"
+          python3 - "$WORK" <<'PY'
+          import base64
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          work = Path(sys.argv[1])
+          manifest = json.loads((work / "latest.json").read_text(encoding="utf-8"))
+          payload = work / "ARGUS-MASTER-16.10.0-bcc61ed52b22f6c8-v16010000.apk.enc"
+          assert manifest["schema"] == 1
+          assert manifest["channel"] == "stable-device-bound"
+          assert manifest["status"] == "ready"
+          assert manifest["package_name"] == "com.argus.standalone.main"
+          assert manifest["version_code"] == 16010000
+          assert manifest["version_code"] > 1690100
+          assert manifest["version_name"] == "16.10.0-master-remote-health-recovery"
+          assert manifest["device_id"] == "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2"
+          assert manifest["certificate_sha256"] == "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0"
+          assert manifest["plaintext_sha256"] == "ea397cbf5341191befc0f1e5e235dceff665dcc9f6c5d13baa1643106e188279"
+          assert hashlib.sha256(payload.read_bytes()).hexdigest() == manifest["ciphertext_sha256"]
+          assert len(base64.b64decode(manifest["wrapped_key_base64"])) == 384
+          assert len(base64.b64decode(manifest["nonce_base64"])) == 12
+          assert manifest["key_wrap_profile"] == "RSA-OAEP-SHA256-MGF1-SHA1"
+          print("ARGUS_16_10_0_VERSIONCODE_FIXED_PUBLICATION PASS")
+          PY
+          if find . -type f -name '*.apk' -print -quit | grep -q .; then
+            echo "Open APK must never enter the update channel" >&2
+            exit 1
+          fi
+
+      - name: Atomically publish from current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          NEW="ARGUS-MASTER-16.10.0-bcc61ed52b22f6c8-v16010000.apk.enc"
+          WORK="$RUNNER_TEMP/argus-1610-fixed"
+          git fetch origin main
+          git checkout -B publish-main origin/main
+          mkdir -p payloads
+          find payloads -maxdepth 1 -type f -name '*.enc' ! -name "$NEW" -delete
+          cp "$WORK/$NEW" "payloads/$NEW"
+          cp "$WORK/latest.json" latest.json
+          git config user.name "ARGUS Secure Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add latest.json payloads
+          git commit -m "Fix ARGUS 16.10.0 device-bound versionCode"
+          git push origin HEAD:main
