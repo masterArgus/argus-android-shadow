@@ -1,4 +1,5 @@
 name: Publish encrypted ARGUS 16.10.0 REMOTE HEALTH RECOVERY
+# One-time device-bound publication trigger
 
 on:
   push:
