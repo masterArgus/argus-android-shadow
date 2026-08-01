@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "channel": "stable-device-bound",
+  "status": "ready",
+  "package_name": "com.argus.standalone.main",
+  "version_code": 16012001,
+  "version_name": "16.12.1-grand-hall-foundation",
+  "payload_url": "https://raw.githubusercontent.com/masterArgus/argus-android-shadow/main/payloads/ARGUS-MASTER-16.12.1-bcc61ed52b22f6c8-v16012001.apk.enc",
+  "payload_size": 1358215,
+  "ciphertext_sha256": "65ebaabb4bff4e39d3db7b7b0afa29b87d9bd742478128ab5e4604e931947140",
+  "plaintext_sha256": "6d43699d2e8bfedca321c21597bb5181813e7df39ced81f9a137b5f1128a6338",
+  "wrapped_key_base64": "eTRhTf3aBMnKXqSAT/SJGOm0I3dBbSCuG3HoNUTlzCs1y9IIq0TDwG8ie2qaZMpr4mWMn5jbsYcKGjIzGgxybTpP0pPv6olRlf+dhwYVM6b1S8hiHu5LSeuDgfDrUxnxJk1CMau7PJrRgo3srSU7SBwWl1ogQ891gUjxypDGjw6OasN5TU+YnBG2eW7PoN1H2dgnglr+moWxyL0PL0eSkNGjfyovZD2pl29a4OQCi8Jo7QKSoBiXD7AP4/mxCno5+F+M3Qa+ZoSPOw1syUoWDSJ+8o5ycWG2igDnFzjw6BIgX5UAACpAhSyA1Jp/38hcTIGvMBi6oaaL8TzdMkE6Y94Smt4AJv3c2biNAt46g55mdf4L8cYdBAPnQPopuhaDwYnCuGQ2rj3wh3sIvSA28NQcHOT8GZUQ1xjCE/zE5yWVAjPTiRzeuNdiTvVZiE+/oGhf3ZGJXvhl8MOYrJyyZsixHGjiE6GEOZ9pxAm6WPjej02MDa/eu7nmhQXAIBsN",
+  "nonce_base64": "f6EAvW6Ef/6y4/TC",
+  "aad_base64": "QVJHVVN8c3RhYmxlLWRldmljZS1ib3VuZHxjb20uYXJndXMuc3RhbmRhbG9uZS5tYWlufDE2MDEyMDAxfGJjYzYxZWQ1MmIyMmY2Yzg2MjBjODU0NmRkYjJjNDE1NGI1ZWQzMjEzZDg1MmQyM2IxNWYzYmNiOTgwNTcxZDI=",
+  "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
+  "device_id": "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2",
+  "published_at": "2026-08-01T13:54:48.861247+00:00",
+  "key_wrap_profile": "RSA-OAEP-SHA256-MGF1-SHA1",
+  "release_notes": [
+    "ARGUS GRAND HALL стал главным стартовым центром системы",
+    "Добавлены Прайм в капюшоне, центральный стол GALA и восемь рабочих дисплеев",
+    "Дисплеи открывают 1-й, 2-й, 3-й, 4-й этажи, MASTER, память, архив и торговые режимы",
+    "Старый GAME MASTER удалён из навигации и заменён безопасным переходом в GRAND HALL",
+    "Сохранены native futures facts Binance USD-M и точная сетка tickSize версии 16.12.0",
+    "Порог допуска остаётся 87/100 при жёстком минимуме 80/100",
+    "Автоматические и реальные ордера остаются HARD BLOCKED"
+  ]
+}
