@@ -30,7 +30,7 @@ jobs:
           test "$(git rev-parse origin/main)" = "83a24dd963afd01bfcbfbc42197ed6377b1f39cc"
           test -z "$(git ls-files '*.apk')"
           curl --fail --location --retry 4 --retry-delay 2 \
-            'https://sdmntprnortheu.oaiusercontent.com/files/00000000-22dc-81f4-bc1f-56893e4fe7a0/raw?se=2026-08-01T17:31:35Z&sp=r&sv=2026-02-06&sr=b&scid=6b290725-dca0-5655-ba0a-975318c1a5ea&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-31T23:43:02Z&ske=2026-08-02T23:43:02Z&sks=b&skv=2026-02-06&sig=0P8I3gEjgMeZ93SfW%2BdGy98yIP8DIh1CVDCFP0RHlbo%3D' \
+            'https://sdmntprnortheu.oaiusercontent.com/files/00000000-a450-81f4-86cc-36e8678525e9/raw?se=2026-08-01T17:35:39Z&sp=r&sv=2026-02-06&sr=b&scid=af0ebede-b55b-5caf-8494-fa634a2a7985&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-01T09:05:30Z&ske=2026-08-02T09:05:30Z&sks=b&skv=2026-02-06&sig=1Q804r3Hrwm7LoCth5QvcN94dnW3rFhdfoSlCJsTCnM%3D' \
             --output /tmp/argus-16124-device-bound.zip
           echo 'b9460917f69a1e8f3539c212744395cffe0af6ceb39709efcc7bf16175b2306e  /tmp/argus-16124-device-bound.zip' \
             | sha256sum -c -
