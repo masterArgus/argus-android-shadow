@@ -1,1 +1,2 @@
 ARGUS 16.10.0 device-bound publication trigger
+retry=complete-small-chunks
