@@ -1,0 +1,1 @@
+ARGUS 16.12.4 one-time protected publication trigger.
