@@ -67,10 +67,16 @@ jobs:
         run: |
           set -euo pipefail
           NEW="ARGUS-MASTER-16.10.0-bcc61ed52b22f6c8.apk.enc"
+          git fetch origin main
+          git reset --hard origin/main
+          mkdir -p payloads
+          cat staging/payload-*.b64 | base64 -d > "payloads/$NEW"
+          echo "75b97f2715bab43f78efa3a4ef7f1823b38b311c4eb09610ac8b625e318a783a  payloads/$NEW" | sha256sum -c -
+          cp staging/latest-1610.json latest.json
+          cp staging/health-channel-1610.json health-channel.json
           find payloads -maxdepth 1 -type f -name '*.enc' ! -name "$NEW" -delete
           git rm .github/workflows/publish-1610.yml
           git rm -r staging
-          test ! -e .secure-publish-trigger-1610 || git rm .secure-publish-trigger-1610
           git config user.name "ARGUS Secure Publisher"
           git config user.email "actions@users.noreply.github.com"
           git add latest.json health-channel.json payloads
