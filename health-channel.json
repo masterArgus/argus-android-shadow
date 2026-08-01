@@ -1,8 +1,11 @@
 {
   "schema": 1,
   "purpose": "ARGUS_REMOTE_HEALTH",
-  "status": "awaiting_trusted_receiver",
+  "status": "ready",
+  "endpoint_url": "https://argus-health-receiver.lobas4411.chatgpt.site/v1/health/ingest",
   "device_id": "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2",
+  "signing_key_sha256": "765a8fd043130bc93319e0507d5a2c20d856d0d7f5624a258521a867c6ef1337",
+  "permissions": "OUTBOUND_HEALTH_ONLY",
   "incoming_commands": false,
-  "notes": "Telemetry remains in the bounded local outbox until the tablet signing key and a trusted receiver are registered."
+  "notes": "Receiver accepts only signed, bounded, de-identified health reports from the registered tablet. No commands are returned or processed."
 }
