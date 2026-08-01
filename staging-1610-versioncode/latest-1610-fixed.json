@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "channel": "stable-device-bound",
+  "status": "ready",
+  "package_name": "com.argus.standalone.main",
+  "version_code": 16010000,
+  "version_name": "16.10.0-master-remote-health-recovery",
+  "payload_url": "https://raw.githubusercontent.com/masterArgus/argus-android-shadow/main/payloads/ARGUS-MASTER-16.10.0-bcc61ed52b22f6c8-v16010000.apk.enc",
+  "ciphertext_sha256": "804874230f6e00caf4b334ce19c8b4ce1a0c1b971a5356dff78131d2b04fd201",
+  "plaintext_sha256": "ea397cbf5341191befc0f1e5e235dceff665dcc9f6c5d13baa1643106e188279",
+  "wrapped_key_base64": "UciuC7w/fd1kzU6aUIDt3NEJeEpI52L8eUBJUfm5B4YYQajK3EjXm0lPv9qBAwUWf6NRwUhbJx88OK/Qn9TacA19NBpK+6J2SbDgQnhqMNGwZvotJ4dzWfYcxAYoqYYt+5CdrYQi7HjBRgIBUFE+kQhqnYvwzASG3e5vO3jK3SiiA2EmXvwdcv2DZKt3+wCdRr8wGlQnrD4Z0/C3hE3sX6UtKor73PDg+v/RqKmrc4MTK1vWAI9fKwI2FcRXk9WGjPsZX3srlIftFf7RuhA5+PFhlSq/4O0dylzlCgrO3POQl2BdiigMCjJFLSZfyQRsUC2XBMN5OYrdWP6iifWMRA8nq6OHin2MoRPek19qFCvnyJ5wjof5qTeH3MpYGtMpxAhdz6c9dGc8z6OF/zibazLGrFzytJHYYhO8HOYoIpd8rapPKeTc2W00ieRatIJv79AGdgGTwccVQOvBM160tmTQsLCBsRIy6/oavjqWhO0FYktR00Ph2R9buH/QI6FC",
+  "nonce_base64": "BxFDDuLgbPr9xUOM",
+  "aad_base64": "QVJHVVN8c3RhYmxlLWRldmljZS1ib3VuZHxjb20uYXJndXMuc3RhbmRhbG9uZS5tYWlufDE2MDEwMDAwfGJjYzYxZWQ1MmIyMmY2Yzg2MjBjODU0NmRkYjJjNDE1NGI1ZWQzMjEzZDg1MmQyM2IxNWYzYmNiOTgwNTcxZDI=",
+  "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
+  "device_id": "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2",
+  "published_at": "2026-08-01T05:43:47.600983+00:00",
+  "key_wrap_profile": "RSA-OAEP-SHA256-MGF1-SHA1",
+  "release_notes": [
+    "Удалённая диагностика GREEN/YELLOW/RED и безопасный ручной экспорт",
+    "Исходящая телеметрия подписывается отдельным ключом Android Keystore",
+    "До регистрации доверенного приёмника отчёты остаются в локальном outbox",
+    "Median/p95 Binance, свежесть, пропуски, базы, память и планировщик",
+    "GAME MASTER работает FAIL-CLOSED при устаревших данных",
+    "Три ограниченные read-only попытки восстановления Binance",
+    "Перед установкой создаётся точка восстановления данных и предыдущего APK",
+    "Входящие команды, секреты и полные торговые журналы не передаются",
+    "Автоматические и реальные ордера остаются HARD BLOCKED"
+  ]
+}
