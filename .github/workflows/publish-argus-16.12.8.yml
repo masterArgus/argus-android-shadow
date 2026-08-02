@@ -14,7 +14,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.head_ref == 'agent/publish-argus-16.12.8-master-feedback-calibrated-memory'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout exact protected publication branch
         uses: actions/checkout@v4
@@ -22,16 +22,27 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      - name: Download and verify encrypted device-bound bundle
+      - name: Wait for live encrypted bundle URL and verify bundle
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags origin main
           test "$(git rev-parse origin/main)" = "e9efb641d40335e83a1fe8242c19936deaef6ee8"
           test -z "$(git ls-files '*.apk')"
-          curl --fail --location --retry 4 --retry-delay 2 \
-            'https://sdmntpritalynorth.oaiusercontent.com/files/00000000-f2d0-8246-8fd3-d0877ab2d08a/raw?se=2026-08-02T04:28:48Z&sp=r&sv=2026-02-06&sr=b&scid=a903af68-5bf5-5cc1-9ccd-32575c4be99e&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-01T23:45:06Z&ske=2026-08-03T23:45:06Z&sks=b&skv=2026-02-06&sig=3vQ8vQDyonOA9Un%2B1nEj0%2Bu5pCpyvXo601cJbpF/qO4%3D' \
-            --output /tmp/argus-16128-device-bound.zip
+
+          RENDEZVOUS='https://raw.githubusercontent.com/masterArgus/argus-android-shadow/agent/publish-argus-16.12.8-master-feedback-calibrated-memory/publication/bundle-url-16128.txt'
+          BUNDLE_URL=''
+          for attempt in $(seq 1 120); do
+            BUNDLE_URL="$(curl --fail --silent --show-error --location \
+              "${RENDEZVOUS}?cache_bust=$(date +%s)-${attempt}" 2>/dev/null | tr -d '\r\n' || true)"
+            case "$BUNDLE_URL" in
+              https://*.oaiusercontent.com/files/*/raw?*) break ;;
+              *) BUNDLE_URL=''; sleep 5 ;;
+            esac
+          done
+          test -n "$BUNDLE_URL"
+          curl --fail --location --retry 4 --retry-delay 1 \
+            "$BUNDLE_URL" --output /tmp/argus-16128-device-bound.zip
           echo 'd49b24b714ba9f0be32e739746ac22eff530500a4d2483aece5e6c51a57b073f  /tmp/argus-16128-device-bound.zip' | sha256sum -c -
           rm -rf .argus-publish-16128
           mkdir .argus-publish-16128
@@ -95,7 +106,7 @@ jobs:
           print('ARGUS 16.12.8 device-bound ciphertext: PASS')
           PY
 
-      - name: Publish encrypted payload and remove one-time workflow
+      - name: Publish encrypted payload and remove one-time material
         shell: bash
         run: |
           set -euo pipefail
@@ -105,6 +116,7 @@ jobs:
           cp ".argus-publish-16128/$PAYLOAD" "payloads/$PAYLOAD"
           git rm -f payloads/ARGUS-MASTER-16.12.7-bcc61ed52b22f6c8-v16012007.apk.enc
           git rm .github/workflows/publish-argus-16.12.8.yml
+          git rm publication/bundle-url-16128.txt
           rm -rf .argus-publish-16128
           git add latest.json "payloads/$PAYLOAD"
           test -z "$(git ls-files '*.apk')"
