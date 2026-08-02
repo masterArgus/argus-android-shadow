@@ -1,0 +1,115 @@
+name: Publish encrypted ARGUS 16.13.2 FINAL INTEGRATION
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/publish-argus-16.13.2-final-integration'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact publication branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Download and verify device-bound bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          test "$(git rev-parse origin/main)" = "dbc6d76a258f0ebc4e92504cc2f29beb29aa4363"
+          test -z "$(git ls-files '*.apk')"
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://sdmntprnortheu.oaiusercontent.com/files/00000000-8d54-81f4-a399-0872a69e46c4/raw?se=2026-08-02T18:39:24Z&sp=r&sv=2026-02-06&sr=b&scid=1f63b96f-833f-58ba-b1c3-120e42e5201a&skoid=e5f84a89-964a-4fd3-92c2-c2cb3a12ea16&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-02T07:28:15Z&ske=2026-08-03T07:28:15Z&sks=b&skv=2026-02-06&sig=ROszq37pkqjtAvMTTuyBWKsRAjNbUD9HgfEaGaMF2d8%3D' \
+            --output /tmp/argus-16132-device-bound.zip
+          echo 'cabc6202af2638aae1069c53a9c93a92945186fb6a3870a84fa7eaa14f8b39ce  /tmp/argus-16132-device-bound.zip' | sha256sum -c -
+          rm -rf .argus-publish-16132
+          mkdir .argus-publish-16132
+          unzip -q /tmp/argus-16132-device-bound.zip -d .argus-publish-16132
+          test -z "$(find .argus-publish-16132 -type f -name '*.apk' -print -quit)"
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          stage = Path('.argus-publish-16132')
+          current = json.loads(Path('latest.json').read_text(encoding='utf-8'))
+          if current.get('version_code') != 16013100:
+              raise SystemExit('Channel base version changed')
+          if current.get('device_id') != 'bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2':
+              raise SystemExit('Current channel belongs to another device')
+          old_payload = Path('payloads/ARGUS-MASTER-16.13.1-bcc61ed52b22f6c8-v16013100.apk.enc')
+          if not old_payload.is_file():
+              raise SystemExit('Expected 16.13.1 payload is missing')
+          if hashlib.sha256(old_payload.read_bytes()).hexdigest() != '6314c268d39674eb798a9b6039903c6f860ed40a43db724575330941b2eb4579':
+              raise SystemExit('Previous payload hash mismatch')
+          if current.get('ciphertext_sha256') != '6314c268d39674eb798a9b6039903c6f860ed40a43db724575330941b2eb4579':
+              raise SystemExit('Unexpected 16.13.1 channel hash')
+
+          manifest = json.loads((stage / 'latest.json').read_text(encoding='utf-8'))
+          proof = json.loads((stage / 'proof.json').read_text(encoding='utf-8'))
+          expected = {
+              'schema': 1,
+              'channel': 'stable-device-bound',
+              'status': 'ready',
+              'package_name': 'com.argus.standalone.main',
+              'version_code': 16013200,
+              'version_name': '16.13.2-final-integration',
+              'ciphertext_sha256': '80e38702f139a640df26a46189ef1d2a7b7801183d6488d3c2800ed7c80a48cf',
+              'plaintext_sha256': 'c911cb4efa7dd3464683731f7d3f6d5b263e9127b402a706d2b68a0f0668a8e9',
+              'certificate_sha256': 'd6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0',
+              'device_id': 'bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2',
+              'key_wrap_profile': 'RSA-OAEP-SHA256-MGF1-SHA1',
+              'payload_size': 1422539,
+          }
+          for key, value in expected.items():
+              if manifest.get(key) != value:
+                  raise SystemExit(f'Manifest mismatch for {key}')
+          payload_name = 'ARGUS-MASTER-16.13.2-bcc61ed52b22f6c8-v16013200.apk.enc'
+          expected_url = 'https://raw.githubusercontent.com/masterArgus/argus-android-shadow/main/payloads/' + payload_name
+          if manifest.get('payload_url') != expected_url:
+              raise SystemExit('Manifest payload URL mismatch')
+          payload = stage / payload_name
+          if not payload.is_file() or payload.stat().st_size != expected['payload_size']:
+              raise SystemExit('Ciphertext size mismatch')
+          if hashlib.sha256(payload.read_bytes()).hexdigest() != expected['ciphertext_sha256']:
+              raise SystemExit('Ciphertext SHA-256 mismatch')
+          for key in ('plaintext_sha256', 'ciphertext_sha256', 'payload_size',
+                      'certificate_sha256', 'device_id', 'key_wrap_profile'):
+              if proof.get(key) != expected[key]:
+                  raise SystemExit(f'Proof mismatch for {key}')
+          if proof.get('source_commit') != '9f33b67d09759c1332ee0be5b8387eeb91722035':
+              raise SystemExit('Unexpected protected source commit')
+          if proof.get('aes_gcm_round_trip') != 'PASS' or proof.get('rsa_key_bits') != 3072:
+              raise SystemExit('Encryption proof failed')
+          print('ARGUS 16.13.2 device-bound ciphertext: PASS')
+          PY
+
+      - name: Publish encrypted payload and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAYLOAD='ARGUS-MASTER-16.13.2-bcc61ed52b22f6c8-v16013200.apk.enc'
+          mkdir -p payloads
+          cp .argus-publish-16132/latest.json latest.json
+          cp ".argus-publish-16132/$PAYLOAD" "payloads/$PAYLOAD"
+          git rm -f payloads/ARGUS-MASTER-16.13.1-bcc61ed52b22f6c8-v16013100.apk.enc
+          git rm .github/workflows/publish-argus-16.13.2-final-integration.yml
+          rm -rf .argus-publish-16132
+          git add latest.json "payloads/$PAYLOAD"
+          test -z "$(git ls-files '*.apk')"
+          test "$(git ls-files 'payloads/*.enc' | wc -l)" -eq 1
+          git config user.name 'ARGUS Secure Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Publish encrypted ARGUS 16.13.2 FINAL INTEGRATION'
+          git push origin HEAD:main
