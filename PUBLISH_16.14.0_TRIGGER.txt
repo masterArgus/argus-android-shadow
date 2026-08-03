@@ -1,4 +1,0 @@
-ARGUS 16.14.0 DEMO PRIME publication trigger
-source_commit=9ed37ba9b376bb6f8b46e1d977a732c37fae6eef
-plaintext_sha256=699c843d9b1f9147297a17ac0aeb54ce726b208bd3278e5f5ecd5db40be1288d
-ciphertext_sha256=6f40ddbfa94dfc84cdc3a4faf3b6176e307305b6ed44222248805cbe0de241d5
