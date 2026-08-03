@@ -1,15 +1,16 @@
 name: Activate ARGUS 16.14.0 update channel
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/activate-argus-16.14.0-update-channel
+      - main
 
 permissions:
   contents: write
 
 jobs:
   activate:
+    if: github.head_ref == 'agent/activate-argus-16.14.0-update-channel'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
