@@ -1,0 +1,4 @@
+ARGUS 16.14.1 MISSION INTEGRITY publication trigger
+source_commit=bbc96d73a59f504f879fea6cc5c01c3947ee10cf
+plaintext_sha256=d212c5cfb6d10b7ce609081626bf564bcef8a3bf6ce76b5bc2dade719a301674
+ciphertext_sha256=0e65d4b69d94dc08f82d92ba3fcbd9f07355230dcd9baea3bc98864cb463dd76
