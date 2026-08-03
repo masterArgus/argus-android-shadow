@@ -1,0 +1,1 @@
+Updater compatibility adjustment for ARGUS 16.14.0.
