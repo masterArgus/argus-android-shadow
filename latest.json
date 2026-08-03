@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "channel": "stable-device-bound",
-  "status": "ready-for-device-test",
+  "status": "ready",
   "package_name": "com.argus.standalone.main",
   "version_code": 16014000,
   "version_name": "16.14.0-demo-prime-lab-foundation",
