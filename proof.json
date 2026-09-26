@@ -1,8 +1,8 @@
 {
-  "source_commit": "d524eab5323d7250396348346a944401e44043ae",
-  "plaintext_sha256": "d0d7dffc34442b986bc1d2c350bc06690b4913a98e4705d33b1ffcf9471a2368",
-  "ciphertext_sha256": "4ed0cd0fca3ed8778f92651e934ad885e1f479b7d10f676102beaf1fba65824f",
-  "payload_size": 1474954,
+  "source_commit": "5c2a21420fca4becd8270c68eced071f66f8b62c",
+  "plaintext_sha256": "909aa9dffebc08b53bde88d7d8ee6eae788460b2f2ebbd9b45750590ce88d975",
+  "ciphertext_sha256": "6598bd001f9c456dc231c260e2782038575273866fb16a3426f1a4877ce9648a",
+  "payload_size": 1475646,
   "certificate_sha256": "d6af01d471b1a3c7ee14c69b5ba80d57a5011974e6c811faae1c1e58573a95e0",
   "device_id": "bcc61ed52b22f6c8620c8546ddb2c4154b5ed3213d852d23b15f3bcb980571d2",
   "aes_gcm_round_trip": "PASS",
