@@ -1,6 +1,0 @@
-{
-  "version": "16.24.0",
-  "artifact_zip_url": "https://sdmntpritalynorth.oaiusercontent.com/files/00000000-b914-8246-bc40-9999fda2b237/raw?se=2026-10-15T09%3A37%3A06Z&sp=r&sv=2026-02-06&sr=b&scid=120986ca-d0da-565a-9b4c-e2cff3af6bec&skoid=56822d8b-6cfd-42ed-a00d-1452dca42036&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-15T07%3A43%3A07Z&ske=2026-10-16T07%3A43%3A07Z&sks=b&skv=2026-02-06&sig=9W/BlR7zdZGGvc1F0D/pRLN5WLIXzFFBdze/DzUhRI0%3D",
-  "artifact_sha256": "558ab311d37f7e2337041c1b3e4bc076b8855dc290471ad5eb621098493bf6b8",
-  "purpose": "validated encrypted device-bound ARGUS Agent Core release; no raw APK"
-}
