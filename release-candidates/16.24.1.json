@@ -1,0 +1,6 @@
+{
+  "version": "16.24.1",
+  "artifact_zip_url": "https://sdmntprdenmarkeast.oaiusercontent.com/files/00000000-6fe0-8210-9024-c331639f8f41/raw?se=2026-10-15T09%3A55%3A42Z&sp=r&sv=2026-02-06&sr=b&scid=7f104910-3316-5c61-b7f3-15ecd777e749&skoid=56822d8b-6cfd-42ed-a00d-1452dca42036&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-15T08%3A12%3A58Z&ske=2026-10-16T08%3A12%3A58Z&sks=b&skv=2026-02-06&sig=ChTRMzfYvXnMv%2Bm1otOYb4xJmcraytP3Bj8mR7MIYfk%3D",
+  "artifact_sha256": "d73cee20b107205f8cab2ea387655a6f91961e3b1a2766d34df6aa7f2e783f1d",
+  "purpose": "device-bound encrypted ARGUS Agent memory and GPT update; no plaintext APK"
+}
