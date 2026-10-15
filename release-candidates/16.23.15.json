@@ -1,6 +1,0 @@
-{
-  "version": "16.23.15",
-  "artifact_zip_url": "https://sdmntpreastus.oaiusercontent.com/files/00000000-ebfc-81f9-9631-9212ce57bb18/raw?se=2026-10-15T08%3A47%3A14Z&sp=r&sv=2026-02-06&sr=b&scid=23862c83-196c-51e0-acca-461b74f610db&skoid=56822d8b-6cfd-42ed-a00d-1452dca42036&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-15T07%3A42%3A31Z&ske=2026-10-16T07%3A42%3A31Z&sks=b&skv=2026-02-06&sig=5OlVmEQ6gUN6ftyr0b9/bALhhRDo339x7c2c3PPky44%3D",
-  "artifact_sha256": "d428af2b22abe7cc6f9e8330aca073db59acafc52d12b3fc00167031e54a4a42",
-  "purpose": "one-time device-bound encrypted ARGUS 16.23.15 update; no raw APK"
-}
