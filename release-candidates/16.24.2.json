@@ -1,6 +1,0 @@
-{
-  "version": "16.24.2",
-  "artifact_zip_url": "https://sdmntprdenmarkeast.oaiusercontent.com/files/00000000-2858-8210-8d21-8bd8128f47f7/raw?se=2026-10-15T12%3A01%3A41Z&sp=r&sv=2026-02-06&sr=b&scid=232d02b5-84b2-5c6b-bb19-542213bebdb7&skoid=d294dba5-36f7-432b-aab8-935656489847&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-15T06%3A24%3A30Z&ske=2026-10-16T06%3A24%3A30Z&sks=b&skv=2026-02-06&sig=W1CFCnPQfPr6KI04mNuGxmMfOV7BkHpnsv1cEpMse3o%3D",
-  "artifact_sha256": "25cbe9c35a0c4ced4cb322fd1c95aebde10ddcbf46b583c9eebac2d6b82a80f5",
-  "purpose": "Release verified signed encrypted ARGUS 16.24.2 to existing tablet; no plain APK"
-}
