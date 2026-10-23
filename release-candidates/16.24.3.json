@@ -1,9 +1,0 @@
-{
-  "schema": 1,
-  "release": "16.24.3",
-  "artifact_zip_url": "https://sdmntprdenmarkeast.oaiusercontent.com/files/00000000-1f38-8210-8696-3e8457c234ed/raw?se=2026-10-23T17%3A35%3A13Z&sp=r&sv=2026-02-06&sr=b&scid=46107cf4-3713-54cd-b570-4dcc9e14f98b&skoid=d294dba5-36f7-432b-aab8-935656489847&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-23T05%3A41%3A58Z&ske=2026-10-24T05%3A41%3A58Z&sks=b&skv=2026-02-06&sig=V%2B51Nt%2BwqsKVCfl7yQdEltQXQWHQ6bj5QAPfVkZarCc%3D",
-  "expected_artifact_sha256": "22f6fa4cf57049524b9ed3cbd2313e47dda01cf9bb978bfddb1fe133da9dd8a0",
-  "expected_bundle_sha256": "b26122001aca35f9b7d3c2c1db6df4d680b3c5b1d4e6e8815c641d14e1b040b9",
-  "source_ci_run": 39994854211,
-  "source_commit": "e94a2529745ed86cc34ec8218f5113182e9d7a3c"
-}
